@@ -29,12 +29,14 @@ const typeDefs = gql`
         user: User
         text: String
         reactions: [String]
+        channelId: ID
     }
 
     type Channel {
         id: ID
         type: ChannelType
         name: String
+        groupId: ID
         public: Boolean
         members: [User]
         messages: [Message]
@@ -46,7 +48,10 @@ const typeDefs = gql`
     }
 
     type Query {
-        getUser: String
+        getUser(id: ID): User
+        getUsers(channelId: ID, groupId: ID): [User]
+        getChannels(groupId: ID): [Channel]
+        getMessages(messageType: ChannelType): [Message]
     }
 `;
 
