@@ -34,12 +34,12 @@ const typeDefs = gql`
 
     type Channel {
         id: ID
-        type: ChannelType
         name: String
         groupId: ID
         public: Boolean
         members: [User]
         messages: [Message]
+        channelType: ChannelType
     }
 
     enum ChannelType {
