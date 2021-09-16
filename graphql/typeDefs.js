@@ -47,11 +47,22 @@ const typeDefs = gql`
         Direct
     }
 
+    # -------------------- Inputs
+
+    input GroupInput {
+        id: ID
+        name: String
+    }
+
     type Query {
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
         getChannels(groupId: ID): [Channel]
         getMessages(messageType: ChannelType): [Message]
+    }
+
+    type Mutation {
+        createGroup(input: GroupInput): Group
     }
 `;
 

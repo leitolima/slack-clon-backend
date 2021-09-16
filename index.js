@@ -1,5 +1,9 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const {
+    ApolloServerPluginLandingPageDisabled,
+    ApolloServerPluginLandingPageGraphQLPlayground,
+} = require('apollo-server-core');
 const resolvers = require('./graphql/resolvers');
 const typeDefs = require('./graphql/typeDefs');
 const cors = require('cors');
@@ -32,6 +36,10 @@ const startServer = async () => {
     server = new ApolloServer({
         typeDefs,
         resolvers,
+        plugins: [
+            ApolloServerPluginLandingPageDisabled(),
+            ApolloServerPluginLandingPageGraphQLPlayground()
+        ],
         context: ({ req, res }) => {
             const head = process.env.NODE_ENV == 'production'
             ? process.env.APP_URL
