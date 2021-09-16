@@ -18,11 +18,11 @@ const resolvers = {
         createUser: async (_, { input }) => {
             console.log('Mutation => createUser');
             try {
-                const { name, email, username, position, telephone } = input;
+                const { name, email, position, telephone } = input;
                 const userFound = await User.findOne({ email });
                 if(userFound) throw new Error('This email is already registered.');
                 const newUser = new User({
-                    name, email, username, position, telephone
+                    name, email, username: name, position, telephone
                 });
                 await newUser.save();
                 return newUser;

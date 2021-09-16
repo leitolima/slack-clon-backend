@@ -16,10 +16,12 @@ const UserSchema = new Schema({
     position: {
         type: String,
         require: true,
+        default: '',
     },
     telephone: {
         type: String,
         require: true,
+        default: '',
     },
     status: {
         type: {
