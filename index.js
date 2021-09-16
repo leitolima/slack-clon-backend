@@ -5,14 +5,22 @@ const typeDefs = require('./graphql/typeDefs');
 const cors = require('cors');
 const http = require("http");
 
-const app = express();
+//DB connection
+const connectDB = require('./config/db');
 
+
+//Config
+require('dotenv').config();
 const corsOptions = {
     origin: process.env.NODE_ENV == 'production'
-        ? process.env.APP_URL 
-        : 'http://localhost:3000', 
+    ? process.env.APP_URL 
+    : 'http://localhost:3000', 
     credentials: true, // <-- REQUIRED backend setting
 };
+
+//Initializations
+const app = express();
+connectDB();
 
 //Middlewares
 app.set('trust proxy', 1);
