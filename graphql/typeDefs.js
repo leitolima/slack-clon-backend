@@ -54,6 +54,15 @@ const typeDefs = gql`
         name: String
     }
 
+    input UserInput {
+        id: ID
+        name: String
+        email: String
+        username: String
+        position: String
+        telephone: String
+    }
+
     type Query {
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
@@ -62,7 +71,11 @@ const typeDefs = gql`
     }
 
     type Mutation {
+        # --- Group
         createGroup(input: GroupInput): Group
+
+        # --- User
+        createUser(input: UserInput): User
     }
 `;
 

@@ -37,6 +37,7 @@ const UserSchema = new Schema({
     imageUrl: {
         type: String,
         require: true,
+        default: '',
     },
 });
 

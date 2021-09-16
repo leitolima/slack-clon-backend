@@ -14,6 +14,21 @@ const resolvers = {
             });
             await newGroup.save();
             return newGroup;
+        },
+        createUser: async (_, { input }) => {
+            console.log('Mutation => createUser');
+            try {
+                const { name, email, username, position, telephone } = input;
+                const userFound = await User.findOne({ email });
+                if(userFound) throw new Error('This email is already registered.');
+                const newUser = new User({
+                    name, email, username, position, telephone
+                });
+                await newUser.save();
+                return newUser;
+            } catch (error) {
+                throw new Error(error);
+            }
         }
     }
 }
