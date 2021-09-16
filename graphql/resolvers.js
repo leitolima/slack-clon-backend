@@ -15,6 +15,21 @@ const resolvers = {
             await newGroup.save();
             return newGroup;
         },
+        addMember: async (_, { groupId, email }) => {
+            console.log('Mutation => addMember');
+            try {
+                const user = await User.findOne({ email }, { id: 1, email: 1, });
+                if(!user) throw new Error('This email is not registered.');
+                let group = await Group.findById(groupId);
+                const flag = group.members.includes(user.id);
+                if(flag) throw new Error('This user is already added to this group.');
+                group.members.push(user.id);
+                await group.save();
+                return user;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         createUser: async (_, { input }) => {
             console.log('Mutation => createUser');
             try {
