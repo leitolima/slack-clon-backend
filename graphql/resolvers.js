@@ -4,7 +4,16 @@ const Channel = require('../models/Channel');
 const Message = require('../models/Message');
 
 const resolvers = {
-    Query: { },
+    Query: {
+        getUser: async (_, { id }) => {
+            try {
+                const user = await User.findById(id);
+                return user;
+            } catch (error) {
+                throw new Error(error);
+            }
+        }
+    },
     Mutation: {
         createGroup: async (_, { input }) => {
             console.log('Mutation => createGroup');
