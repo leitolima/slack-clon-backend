@@ -36,6 +36,7 @@ const typeDefs = gql`
         id: ID
         name: String
         groupId: ID
+        createdBy: User
         public: Boolean
         members: [User]
         messages: [Message]
@@ -63,6 +64,15 @@ const typeDefs = gql`
         telephone: String
     }
 
+    input ChannelInput {
+        id: ID
+        createdBy: ID
+        name: String
+        groupId: ID
+        public: Boolean
+        channelType: ChannelType
+    }
+
     type Query {
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
@@ -77,6 +87,9 @@ const typeDefs = gql`
 
         # --- User
         createUser(input: UserInput): User
+
+        # --- Channels
+        createChannel(input: ChannelInput): Channel
     }
 `;
 

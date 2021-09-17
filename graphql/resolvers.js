@@ -12,7 +12,7 @@ const resolvers = {
             } catch (error) {
                 throw new Error(error);
             }
-        }
+        },
     },
     Mutation: {
         createGroup: async (_, { input }) => {
@@ -50,6 +50,19 @@ const resolvers = {
                 });
                 await newUser.save();
                 return newUser;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
+        createChannel: async (_, { input }) => {
+            console.log('Mutation => createChannel');
+            try {
+                const { name, groupId, public, channelType, createdBy } = input;
+                const newChannel = new Channel({
+                    name, groupId, public, channelType, createdBy
+                });
+                await newChannel();
+                return newChannel;
             } catch (error) {
                 throw new Error(error);
             }

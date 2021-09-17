@@ -28,6 +28,10 @@ const ChannelSchema = new Schema({
     channelType: {
         type: String,
         require: true,
+    },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
     }
 });
 
