@@ -83,7 +83,7 @@ const typeDefs = gql`
     type Mutation {
         # --- Group
         createGroup(input: GroupInput): Group
-        addMember(groupId: ID!, email: String!): User
+        addMemberToGroup(groupId: ID!, email: String!): User
 
         # --- User
         createUser(input: UserInput): User

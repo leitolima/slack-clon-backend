@@ -24,8 +24,8 @@ const resolvers = {
             await newGroup.save();
             return newGroup;
         },
-        addMember: async (_, { groupId, email }) => {
-            console.log('Mutation => addMember');
+        addMemberToGroup: async (_, { groupId, email }) => {
+            console.log('Mutation => addMemberToGroup');
             try {
                 const user = await User.findOne({ email }, { id: 1, email: 1, });
                 if(!user) throw new Error('This email is not registered.');
