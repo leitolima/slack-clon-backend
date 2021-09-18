@@ -90,6 +90,7 @@ const typeDefs = gql`
 
         # --- Channels
         createChannel(input: ChannelInput): Channel
+        addMemberToChannel(channelId: ID!, email: String!) User
     }
 `;
 

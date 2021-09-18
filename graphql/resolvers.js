@@ -66,6 +66,21 @@ const resolvers = {
             } catch (error) {
                 throw new Error(error);
             }
+        },
+        addMemberToChannel: async (_, { channelId, email }) => {
+            console.log('Mutation => addMemberToChannel');
+            try {
+                const user = await User.findOne({ email }, { id: 1, email: 1, });
+                if(!user) throw new Error('This email is not registered.');
+                let channel = await Channel.findById(channelId);
+                const flag = channel.members.includes(user.id);
+                if(flag) throw new Error('This user is already added to this group.');
+                channel.members.push(user.id);
+                await channel.save();
+                return user;º
+            } catch (error) {
+                throw new Error(error);
+            }
         }
     }
 }
