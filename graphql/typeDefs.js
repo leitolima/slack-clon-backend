@@ -74,6 +74,9 @@ const typeDefs = gql`
     }
 
     type Query {
+        # --- getRandomUser is for get user who's not connected yet
+        # --- This will be possible with a list of connected users by subscriptions
+        getRandomUser: User
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
         getMyChannels(groupId: ID, userId: ID): [Channel]

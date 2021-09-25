@@ -6,6 +6,17 @@ const Message = require('../models/Message');
 
 const resolvers = {
     Query: {
+        getRandomUser: async () => {
+            console.log('Query => getRandomUser');
+            try {
+                // For now this function will return user with
+                // id = 6143c711c3c546fda5799577
+                const user = await User.findById('6143c711c3c546fda5799577');
+                return user;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         getUser: async (_, { id }) => {
             console.log('Query => getUser');
             try {
