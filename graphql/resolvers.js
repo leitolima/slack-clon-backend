@@ -6,6 +6,7 @@ const Message = require('../models/Message');
 const resolvers = {
     Query: {
         getUser: async (_, { id }) => {
+            console.log('Query => getUser');
             try {
                 const user = await User.findById(id);
                 return user;
@@ -13,6 +14,15 @@ const resolvers = {
                 throw new Error(error);
             }
         },
+        getUsers: async (_, { channelId, groupId }) => {
+            console.log('Query => getUsers');
+            try {
+                const users = await User.find();
+                return users;
+            } catch (error) {
+                throw new Error(error);
+            }
+        }
     },
     Mutation: {
         createGroup: async (_, { input }) => {
