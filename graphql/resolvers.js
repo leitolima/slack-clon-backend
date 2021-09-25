@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const Group = require('../models/Group');
 const Channel = require('../models/Channel');
@@ -19,6 +20,29 @@ const resolvers = {
             try {
                 const users = await User.find();
                 return users;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
+        getMyChannels: async (_, { groupId, userId }) => {
+            console.log('Query => getMyChannels');
+            try {
+                const channels = await Channel.aggregate([
+                    {
+                        $addFields: {
+                            id: { 
+                                $toObjectId: '$_id' 
+                            }
+                        }
+                    },
+                    {
+                        $match: {
+                            'groupId': mongoose.Types.ObjectId(groupId),
+                            'members': mongoose.Types.ObjectId(userId) // It works like includes()
+                        }
+                    }
+                ]);
+                return channels;
             } catch (error) {
                 throw new Error(error);
             }
@@ -71,7 +95,7 @@ const resolvers = {
                 const newChannel = new Channel({
                     name, groupId, public, channelType, createdBy
                 });
-                await newChannel();
+                await newChannel.save();
                 return newChannel;
             } catch (error) {
                 throw new Error(error);

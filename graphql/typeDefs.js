@@ -76,7 +76,7 @@ const typeDefs = gql`
     type Query {
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
-        getChannels(groupId: ID): [Channel]
+        getMyChannels(groupId: ID, userId: ID): [Channel]
         getMessages(messageType: ChannelType): [Message]
     }
 
