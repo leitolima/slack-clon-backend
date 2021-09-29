@@ -79,7 +79,14 @@ const typeDefs = gql`
         getRandomUser: User
         getUser(id: ID): User
         getUsers(channelId: ID, groupId: ID): [User]
+
+        # --- Groups
+        getMyGroups(userId: ID): [Group]
+
+        # --- Channels
         getMyChannels(groupId: ID, userId: ID): [Channel]
+
+        # --- Messages
         getMessages(messageType: ChannelType): [Message]
     }
 

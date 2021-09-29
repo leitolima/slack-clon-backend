@@ -35,6 +35,28 @@ const resolvers = {
                 throw new Error(error);
             }
         },
+        getMyGroups: async (_, { userId }) => {
+            console.log('Query => getMyGroups');
+            try {
+                const groups = await Group.aggregate([
+                    {
+                        $addFields: {
+                            id: { 
+                                $toObjectId: '$_id' 
+                            }
+                        }
+                    },
+                    {
+                        $match: {
+                            'members': mongoose.Types.ObjectId(userId) // It works like includes()
+                        }
+                    }
+                ]);
+                return groups;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         getMyChannels: async (_, { groupId, userId }) => {
             console.log('Query => getMyChannels');
             try {
