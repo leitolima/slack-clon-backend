@@ -38,6 +38,7 @@ const typeDefs = gql`
         groupId: ID
         createdBy: User
         public: Boolean
+        description: String
         members: [User]
         messages: [Message]
         channelType: ChannelType
@@ -70,6 +71,7 @@ const typeDefs = gql`
         name: String
         groupId: ID
         public: Boolean
+        description: String
         channelType: ChannelType
     }
 

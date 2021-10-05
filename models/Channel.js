@@ -15,6 +15,10 @@ const ChannelSchema = new Schema({
         require: true,
         default: true,
     },
+    description: {
+        type: String,
+        default: '',
+    },
     members: [{
         type: Schema.Types.ObjectId,
         ref: 'user',
