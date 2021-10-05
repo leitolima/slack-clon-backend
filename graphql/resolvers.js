@@ -124,6 +124,8 @@ const resolvers = {
         createChannel: async (_, { input }) => {
             console.log('Mutation => createChannel');
             try {
+                const { createdBy } = input;
+                input.members = [createdBy];
                 const newChannel = new Channel(input);
                 await newChannel.save();
                 return newChannel;
