@@ -87,6 +87,7 @@ const typeDefs = gql`
 
         # --- Channels
         getMyChannels(groupId: ID, userId: ID): [Channel]
+        getChannel(channelId: ID, userId: ID): Channel
 
         # --- Messages
         getMessages(messageType: ChannelType): [Message]

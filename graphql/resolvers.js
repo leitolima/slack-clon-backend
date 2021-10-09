@@ -79,6 +79,37 @@ const resolvers = {
             } catch (error) {
                 throw new Error(error);
             }
+        },
+        getChannel: async (_, { channelId, userId }) => {
+            console.log('Query => getChannel');
+            try {
+                if(!channelId) throw new Error('ChannelId is required');
+                const channel = await Channel.aggregate([
+                    { $addFields: {
+                        id: { 
+                            $toObjectId: '$_id' 
+                        }
+                    }},
+                    { $match: {
+                        id: mongoose.Types.ObjectId(channelId),
+                        'members': mongoose.Types.ObjectId(userId) // It works like includes()
+                    }},
+                    { $lookup: {
+                        from: 'users',
+                        let: { members_arr: '$members' },
+                        pipeline: [
+                            { $addFields: { id: { $toObjectId: '$_id' } } },
+                            { $match: { $expr: { $in: ['$id', '$$members_arr'] } } },
+                            { $project: { '_id': 0, id: 1, name: 1, username: 1, imageUrl: 1, position: 1 } }
+                        ],
+                        as: 'members',
+                    }}
+                ])
+                if(!channel.length) throw new Error('This channel not exists or you are not a member');
+                return channel[0];
+            } catch (error) {
+                throw new Error(error);
+            }
         }
     },
     Mutation: {
