@@ -86,6 +86,7 @@ const typeDefs = gql`
         getMyGroups(userId: ID): [Group]
 
         # --- Channels
+        getDirectChannels(groupId: ID!): [User]
         getMyChannels(groupId: ID, userId: ID): [Channel]
         getChannel(channelId: ID, userId: ID): Channel
 

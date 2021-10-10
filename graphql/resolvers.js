@@ -57,6 +57,31 @@ const resolvers = {
                 throw new Error(error);
             }
         },
+        getDirectChannels: async (_, { groupId }) => {
+            console.log('Query => getDirectChannels');
+            try {
+                const group = await Group.aggregate([
+                    { $match: {
+                        '_id': mongoose.Types.ObjectId(groupId)
+                    }},
+                    { $lookup: {
+                        from: 'users',
+                        let: { members_arr: '$members' },
+                        pipeline: [
+                            { $addFields: { id: { $toObjectId: '$_id' } } },
+                            { $match: { $expr: { $in: ['$id', '$$members_arr'] } } },
+                            { $project: { '_id': 0, id: 1, username: 1, imageUrl: 1 } }
+                        ],
+                        as: 'members'
+                    }}
+                ]);
+                if (!group || !group.length) throw new Error('This group not exists.');
+                const users = group[0].members;
+                return users;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         getMyChannels: async (_, { groupId, userId }) => {
             console.log('Query => getMyChannels');
             try {
