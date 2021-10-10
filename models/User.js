@@ -39,7 +39,7 @@ const UserSchema = new Schema({
     imageUrl: {
         type: String,
         require: true,
-        default: '',
+        default: 'https://res.cloudinary.com/dspswtipv/image/upload/v1608780067/cihpcvkxc20fmniyltnq.png',
     },
 });
 
