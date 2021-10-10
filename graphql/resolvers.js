@@ -164,14 +164,21 @@ const resolvers = {
                 throw new Error(error);
             }
         },
-        addMemberToChannel: async (_, { channelId, email }) => {
+        addMemberToChannel: async (_, { groupId, channelId, email }) => {
             console.log('Mutation => addMemberToChannel');
             try {
                 const user = await User.findOne({ email }, { id: 1, email: 1, });
                 if(!user) throw new Error('This email is not registered.');
+                // Validate Group
+                const group = await Group.findById(groupId);
+                const groupFlag = group.members.includes(user.id);
+                if(!groupFlag) throw new Error('This user is not added to this group.');
+                // Validate Channel
                 let channel = await Channel.findById(channelId);
+                if(!channel) throw new Error('This channel not exists.');
                 const flag = channel.members.includes(user.id);
                 if(flag) throw new Error('This user is already added to this group.');
+                // Add User
                 channel.members.push(user.id);
                 await channel.save();
                 return user;º
