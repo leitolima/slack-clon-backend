@@ -1,21 +1,25 @@
 const { Schema, model } = require('mongoose');
 
 const MessageSchema = new Schema({
-    time: {
-        type: String,
-        require: true,
-    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'user',
         require: true,
+    },
+    text: {
+        type: String,
+        require: true,
+    },
+    date: {
+        type: Date,
+        default: new Date(),
     },
     groupId: {
         type: Schema.Types.ObjectId,
         ref: 'group',
         require: true,
     },
-    channelId: {
+    channel: {
         type: Schema.Types.ObjectId,
         ref: 'channel',
         require: true,

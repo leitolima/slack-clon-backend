@@ -25,11 +25,12 @@ const typeDefs = gql`
 
     type Message {
         id: ID
+        date: String
         time: String
         user: User
         text: String
         reactions: [String]
-        channelId: ID
+        channel: Channel
     }
 
     type Channel {
@@ -75,6 +76,13 @@ const typeDefs = gql`
         channelType: ChannelType
     }
 
+    input MessageInput {
+        id: ID
+        user: ID
+        text: String
+        channel: ID
+    }
+
     type Query {
         # --- getRandomUser is for get user who's not connected yet
         # --- This will be possible with a list of connected users by subscriptions
@@ -105,6 +113,9 @@ const typeDefs = gql`
         # --- Channels
         createChannel(input: ChannelInput): Channel
         addMemberToChannel(groupId: ID!, channelId: ID!, email: String!): User
+
+        # --- Messages
+        sendMessage(input: MessageInput): Message
     }
 `;
 

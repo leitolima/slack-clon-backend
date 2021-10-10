@@ -212,6 +212,21 @@ const resolvers = {
             } catch (error) {
                 throw new Error(error);
             }
+        },
+        sendMessage: async (_, { input }) => {
+            console.log('Mutation => sendMessage');
+            try {
+                const { channel: channelId, user: userId } = input;
+                const channel = await Channel.findById(channelId);
+                const flag = channel.members.includes(userId);
+                if(!flag) throw new Error('This user is not added to this group.');
+                const message = new Message(input);
+                await message.save();
+                await Message.populate(message, 'user');
+                return message
+            } catch (error) {
+                throw new Error(error);
+            }
         }
     }
 }
