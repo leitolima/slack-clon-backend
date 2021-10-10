@@ -99,7 +99,7 @@ const typeDefs = gql`
         getChannel(channelId: ID, userId: ID): Channel
 
         # --- Messages
-        getMessages(messageType: ChannelType): [Message]
+        getMessages(channelId: ID): [Message]
     }
 
     type Mutation {

@@ -135,6 +135,44 @@ const resolvers = {
             } catch (error) {
                 throw new Error(error);
             }
+        },
+        getMessages: async (_, { channelId }) => {
+            console.log('Query => getMessages');
+            try {
+                const messages = await Message.aggregate([
+                    { $addFields: {
+                        id: {
+                            $toObjectId: '$_id',
+                        }
+                    }},
+                    { $match: {
+                        channel: mongoose.Types.ObjectId(channelId),
+                    }},
+                    { $project: {
+                        _id: 0, id: 1, text: 1, date: 1, reactions: 1, user: 1,
+                    }},
+                    {
+                        $lookup: {
+                            from: 'users',
+                            let: { user_id: '$user' },
+                            pipeline: [
+                                { $addFields: { id: { $toObjectId: '$_id' } } },
+                                { $match: { $expr: { $eq: ['$id', '$$user_id'] } } },
+                                { $project: { _id: 0, id: 1, username: 1, imageUrl: 1 } }
+                            ],
+                            as: 'userarr'
+                        }
+                    },
+                    { $project: {
+                        id: 1, text: 1, date: 1, reactions: 1, user: '$userarr'
+                    }},
+                    { $unwind: '$user' }
+                ]);
+                console.log(messages)
+                return messages;
+            } catch (error) {
+                throw new Error(error);
+            }
         }
     },
     Mutation: {
