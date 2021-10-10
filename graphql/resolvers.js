@@ -128,6 +128,7 @@ const resolvers = {
                 const user = await User.findOne({ email }, { id: 1, email: 1, });
                 if(!user) throw new Error('This email is not registered.');
                 let group = await Group.findById(groupId);
+                if(!group) throw new Error('This group not exists.');
                 const flag = group.members.includes(user.id);
                 if(flag) throw new Error('This user is already added to this group.');
                 group.members.push(user.id);
@@ -176,12 +177,13 @@ const resolvers = {
                 // Validate Channel
                 let channel = await Channel.findById(channelId);
                 if(!channel) throw new Error('This channel not exists.');
+                if(channel.groupId !== groupId) throw new Error('This channel is not created in this group.');
                 const flag = channel.members.includes(user.id);
                 if(flag) throw new Error('This user is already added to this group.');
                 // Add User
                 channel.members.push(user.id);
                 await channel.save();
-                return user;º
+                return user;
             } catch (error) {
                 throw new Error(error);
             }
