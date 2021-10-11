@@ -4,6 +4,16 @@ const Group = require('../models/Group');
 const Channel = require('../models/Channel');
 const Message = require('../models/Message');
 
+const formatDate = () => {
+    const date = new Date();
+    const formatedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    const formatedTime = `${date.getHours()}:${date.getMinutes()}`;
+    return {
+        date: formatedDate,
+        time: formatedTime,
+    }
+}
+
 const resolvers = {
     Query: {
         getRandomUser: async () => {
@@ -149,8 +159,10 @@ const resolvers = {
                         channel: mongoose.Types.ObjectId(channelId),
                     }},
                     { $project: {
-                        _id: 0, id: 1, text: 1, date: 1, reactions: 1, user: 1,
+                        _id: 0, id: 1, text: 1, date: 1, time: 1, reactions: 1, user: 1,
                     }},
+                    { $sort: { 'date': 1, 'time': 1 } },
+                    // { $limit: 3 },
                     {
                         $lookup: {
                             from: 'users',
@@ -164,7 +176,7 @@ const resolvers = {
                         }
                     },
                     { $project: {
-                        id: 1, text: 1, date: 1, reactions: 1, user: '$userarr'
+                        id: 1, text: 1, date: 1, time: 1, reactions: 1, user: '$userarr'
                     }},
                     { $unwind: '$user' }
                 ]);
@@ -258,7 +270,8 @@ const resolvers = {
                 const channel = await Channel.findById(channelId);
                 const flag = channel.members.includes(userId);
                 if(!flag) throw new Error('This user is not added to this group.');
-                const message = new Message(input);
+                const { date, time } = formatDate();
+                const message = new Message({ ...input, date, time });
                 await message.save();
                 await Message.populate(message, 'user');
                 return message

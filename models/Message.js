@@ -12,7 +12,9 @@ const MessageSchema = new Schema({
     },
     date: {
         type: Date,
-        default: new Date(),
+    },
+    time: {
+        type: String,
     },
     groupId: {
         type: Schema.Types.ObjectId,
